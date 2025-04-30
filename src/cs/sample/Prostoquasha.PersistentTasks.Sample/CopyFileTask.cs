@@ -1,4 +1,5 @@
 using Prostoquasha.PersistentTasks.Core;
+using Prostoquasha.PersistentTasks.Core.Attributes;
 using System;
 using System.IO;
 using System.Threading;
@@ -22,9 +23,11 @@ internal static class CopyFileTask
 
     public interface IState
     {
-        public sealed record CopyingFile : IState;
+        [PersistentTaskState(Name = "Copying file...")]
+        public sealed class CopyingFile : IState;
 
-        public sealed record Completed : IState;
+        [PersistentTaskState(IsFinal = true)]
+        public sealed class Completed : IState;
     }
 
     public sealed class Executor
