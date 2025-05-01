@@ -32,14 +32,16 @@ internal static class CopyFileTask
 
     public sealed class Executor
     {
-        public async Task<IState> ExecuteAsync(PersistentTask<Params, IState> task, CancellationToken cancellationToken)
+        public async Task<ExecutionResult<IState>> ExecuteAsync(
+            PersistentTask<Params, IState> task,
+            CancellationToken cancellationToken)
         {
             switch (task.State)
             {
                 case IState.CopyingFile:
                     var content = await File.ReadAllBytesAsync(task.Parameters.SourceFilePath, cancellationToken);
                     await File.WriteAllBytesAsync(task.Parameters.DestinationFilePath, content, cancellationToken);
-                    return new IState.Completed();
+                    return ExecutionResult.Succeed<IState>(new IState.Completed());
                 default:
                     throw new InvalidOperationException($"State {task.State.GetType()} is not supported.");
             }

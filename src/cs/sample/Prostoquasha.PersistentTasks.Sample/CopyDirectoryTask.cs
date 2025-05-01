@@ -41,7 +41,9 @@ internal static class CopyDirectoryTask
     {
         private readonly IPersistentTaskScheduler _persistentTaskScheduler = persistentTaskScheduler;
 
-        public async Task<IState> ExecuteAsync(PersistentTask<Params, IState> task, CancellationToken cancellationToken)
+        public async Task<ExecutionResult<IState>> ExecuteAsync(
+            PersistentTask<Params, IState> task,
+            CancellationToken cancellationToken)
         {
             switch (task.State)
             {
@@ -91,12 +93,12 @@ internal static class CopyDirectoryTask
                         copyEntryTaskIds.Add(copyDirectoryTask.Id);
                     }
 
-                    return new IState.WaitingEntriesToCopy
+                    return ExecutionResult.Continue<IState>(new IState.WaitingEntriesToCopy
                     {
                         ExpectedTaskIds = copyEntryTaskIds
-                    };
+                    });
                 case IState.WaitingEntriesToCopy:
-                    return new IState.Completed();
+                    return ExecutionResult.Succeed<IState>(new IState.Completed());
                 default:
                     throw new InvalidOperationException($"State {task.State.GetType()} is not supported.");
             }
