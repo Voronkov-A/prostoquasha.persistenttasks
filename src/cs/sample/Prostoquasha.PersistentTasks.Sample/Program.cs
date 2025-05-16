@@ -7,8 +7,15 @@ namespace Prostoquasha.PersistentTasks.Sample;
 
 internal sealed class PersistentTaskScheduler : IPersistentTaskScheduler
 {
-    public Task<PersistentTask<TParameters, TState>> ScheduleAsync<TParameters, TState>(
-        PersistentTask<TParameters, TState> task,
+    public Task<PersistentTask<TParameters, TState, TResult>> ScheduleAsync<TParameters, TState, TResult>(
+        PersistentTask<TParameters, TState, TResult> task,
+        CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task WaitForCompletionAsync<TParameters, TState, TResult>(
+        PersistentTask<TParameters, TState, TResult> task,
         CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -26,5 +33,6 @@ internal static class Program
             DestinationDirectoryPath = "C:/etc/tmp/pt/dstdir"
         });
         task = await scheduler.ScheduleAsync(task, CancellationToken.None);
+        await scheduler.WaitForCompletionAsync(task, CancellationToken.None);
     }
 }

@@ -4,5 +4,6 @@ public enum ExecutionCommand
 {
     Continue,
     Succeed,
-    Fail
+    Fail,
+    WaitForAllChildren
 }

@@ -2,11 +2,11 @@ using System;
 
 namespace Prostoquasha.PersistentTasks.Core;
 
-public sealed class PersistentTask<TParameters, TState>
+public sealed class PersistentTask<TParameters, TState, TResult>
 {
-    public PersistentTask(TParameters parameters, TState state, PersistentTaskId? parentId = null)
+    public PersistentTask(PersistentTaskId id, TParameters parameters, TState state, PersistentTaskId? parentId = null)
     {
-        Id = PersistentTaskId.Create();
+        Id = id;
         Parameters = parameters;
         State = state;
         ParentId = parentId;
@@ -15,6 +15,7 @@ public sealed class PersistentTask<TParameters, TState>
     public PersistentTask(
         PersistentTaskId id,
         TParameters parameters,
+        TResult? result,
         PersistentTaskStatus status,
         TState state,
         PersistentTaskId? parentId,
@@ -24,6 +25,7 @@ public sealed class PersistentTask<TParameters, TState>
     {
         Id = id;
         Parameters = parameters;
+        Result = result;
         Status = status;
         State = state;
         ParentId = parentId;
@@ -35,6 +37,8 @@ public sealed class PersistentTask<TParameters, TState>
     public PersistentTaskId Id { get; }
 
     public TParameters Parameters { get; }
+
+    public TResult? Result { get; }
 
     public PersistentTaskStatus Status { get; }
 

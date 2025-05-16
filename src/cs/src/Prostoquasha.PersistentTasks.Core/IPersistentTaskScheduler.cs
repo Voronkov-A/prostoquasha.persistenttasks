@@ -5,7 +5,11 @@ namespace Prostoquasha.PersistentTasks.Core;
 
 public interface IPersistentTaskScheduler
 {
-    Task<PersistentTask<TParameters, TState>> ScheduleAsync<TParameters, TState>(
-        PersistentTask<TParameters, TState> task,
+    Task<PersistentTask<TParameters, TState, TResult>> ScheduleAsync<TParameters, TState, TResult>(
+        PersistentTask<TParameters, TState, TResult> task,
+        CancellationToken cancellationToken);
+
+    Task WaitForCompletionAsync<TParameters, TState, TResult>(
+        PersistentTask<TParameters, TState, TResult> task,
         CancellationToken cancellationToken);
 }
