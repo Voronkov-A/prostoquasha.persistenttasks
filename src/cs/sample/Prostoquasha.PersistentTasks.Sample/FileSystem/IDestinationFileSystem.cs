@@ -20,7 +20,7 @@ internal interface IDestinationFileSystem
 
     ValueTask<FileEntry?> GetFileOrDefaultAsync(Uri fileUrl, CancellationToken cancellationToken);
 
-    ValueTask<DirectoryEntry?> GetDirectoryOrDefaultAsync(Uri fileUrl, CancellationToken cancellationToken);
+    ValueTask<DirectoryEntry?> GetDirectoryOrDefaultAsync(Uri directoryUrl, CancellationToken cancellationToken);
 
     ValueTask DeleteFileAsync(Uri fileUrl, CancellationToken cancellationToken);
 

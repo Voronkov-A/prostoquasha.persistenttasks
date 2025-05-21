@@ -5,16 +5,16 @@ namespace Prostoquasha.PersistentTasks.Sample.FileSystem;
 
 internal sealed class FileEntry
 {
-    public FileEntry(Uri url, string hash, MemoryUnit size)
+    public FileEntry(Uri url, Md5Hash md5Hash, MemoryUnit size)
     {
         Url = url;
-        Hash = hash;
+        Md5Hash = md5Hash;
         Size = size;
     }
 
     public Uri Url { get; }
 
-    public string Hash { get; }
+    public Md5Hash Md5Hash { get; }
 
     public MemoryUnit Size { get; }
 

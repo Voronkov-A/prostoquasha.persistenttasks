@@ -93,7 +93,7 @@ internal static class SynchronizeDirectoryTask
                             if (sourceFile != null
                                 && destinationFile != null
                                 && sourceFile.Size == destinationFile.Size
-                                && sourceFile.Hash == destinationFile.Hash)
+                                && sourceFile.Md5Hash == destinationFile.Md5Hash)
                             {
                                 continue;
                             }

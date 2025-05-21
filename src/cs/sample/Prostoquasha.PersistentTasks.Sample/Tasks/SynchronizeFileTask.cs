@@ -65,7 +65,7 @@ internal static class SynchronizeFileTask
 
                         if (destinationFile != null
                             && destinationFile.Size == sourceFile.Size
-                            && destinationFile.Hash == sourceFile.Hash)
+                            && destinationFile.Md5Hash == sourceFile.Md5Hash)
                         {
                             return ExecutionResult.Succeed<IState>();
                         }

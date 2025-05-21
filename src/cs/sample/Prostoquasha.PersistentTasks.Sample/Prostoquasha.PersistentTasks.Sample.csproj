@@ -7,6 +7,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../../src/Prostoquasha.PersistentTasks.Core/Prostoquasha.PersistentTasks.Core.csproj" />
   </ItemGroup>
 </Project>
