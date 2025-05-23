@@ -6,6 +6,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="9.0.5" />
+    <ProjectReference Include="../Prostoquasha.PersistentTasks.Core/Prostoquasha.PersistentTasks.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -57,6 +57,26 @@ public sealed class ExecutionResult<TState, TResult>
             continueAfter,
             ExecutionCommand.WaitForAllChildren);
     }
+
+    internal static ExecutionResult<TState, TResult> WaitForAnyChild(TState nextState, DateTimeOffset? continueAfter)
+    {
+        return new ExecutionResult<TState, TResult>(
+            nextState,
+            default,
+            null,
+            continueAfter,
+            ExecutionCommand.WaitForAnyChild);
+    }
+
+    internal static ExecutionResult<TState, TResult> Cancel()
+    {
+        return new ExecutionResult<TState, TResult>(
+            default,
+            default,
+            default,
+            default,
+            ExecutionCommand.Cancel);
+    }
 }
 
 public static class ExecutionResult
@@ -85,6 +105,11 @@ public static class ExecutionResult
         return ExecutionResult<TState, TResult>.Succeed(result);
     }
 
+    public static ExecutionResult<TState, Unit> Succeed<TState>()
+    {
+        return ExecutionResult<TState, Unit>.Succeed(Unit.Value);
+    }
+
     public static ExecutionResult<TState, TResult> WaitForAllChildren<TState, TResult>(
         TState nextState,
         DateTimeOffset? continueAfter = null)
@@ -92,8 +117,20 @@ public static class ExecutionResult
         return ExecutionResult<TState, TResult>.WaitForAllChildren(nextState, continueAfter);
     }
 
-    public static ExecutionResult<TState, Unit> Succeed<TState>()
+    public static ExecutionResult<TState, TResult> WaitForAnyChild<TState, TResult>(
+        TState nextState,
+        DateTimeOffset? continueAfter = null)
     {
-        return ExecutionResult<TState, Unit>.Succeed(Unit.Value);
+        return ExecutionResult<TState, TResult>.WaitForAnyChild(nextState, continueAfter);
+    }
+
+    public static ExecutionResult<TState, TResult> Cancel<TState, TResult>()
+    {
+        return ExecutionResult<TState, TResult>.Cancel();
+    }
+
+    public static ExecutionResult<TState, Unit> Cancel<TState>()
+    {
+        return ExecutionResult<TState, Unit>.Cancel();
     }
 }

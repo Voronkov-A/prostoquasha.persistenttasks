@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prostoquasha.PersistentTask
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prostoquasha.PersistentTasks.Sample", "sample\Prostoquasha.PersistentTasks.Sample\Prostoquasha.PersistentTasks.Sample.csproj", "{AEC3F927-3F1C-44FC-ABFA-0A20B607E041}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prostoquasha.PersistentTasks.InMemory", "src\Prostoquasha.PersistentTasks.InMemory\Prostoquasha.PersistentTasks.InMemory.csproj", "{0D1356FC-57EB-4DE5-B2EA-24973D69E4A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{AEC3F927-3F1C-44FC-ABFA-0A20B607E041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC3F927-3F1C-44FC-ABFA-0A20B607E041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEC3F927-3F1C-44FC-ABFA-0A20B607E041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D1356FC-57EB-4DE5-B2EA-24973D69E4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D1356FC-57EB-4DE5-B2EA-24973D69E4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D1356FC-57EB-4DE5-B2EA-24973D69E4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D1356FC-57EB-4DE5-B2EA-24973D69E4A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +38,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8193782C-8DEF-416E-BB14-3743570C0380} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{AEC3F927-3F1C-44FC-ABFA-0A20B607E041} = {0B23ED5B-81E7-4C8F-9897-7595F9D43098}
+		{0D1356FC-57EB-4DE5-B2EA-24973D69E4A4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57EC157D-7E51-468F-B69E-DCC146092110}
 	EndGlobalSection
 EndGlobal

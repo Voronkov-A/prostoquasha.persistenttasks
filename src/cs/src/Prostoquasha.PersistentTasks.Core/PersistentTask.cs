@@ -4,12 +4,18 @@ namespace Prostoquasha.PersistentTasks.Core;
 
 public sealed class PersistentTask<TParameters, TState, TResult>
 {
-    public PersistentTask(PersistentTaskId id, TParameters parameters, TState state, PersistentTaskId? parentId = null)
+    public PersistentTask(
+        PersistentTaskId id,
+        TParameters parameters,
+        TState state,
+        PersistentTaskId? parentId = null,
+        PersistentTaskStateType stateType = PersistentTaskStateType.Task)
     {
         Id = id;
         Parameters = parameters;
         State = state;
         ParentId = parentId;
+        StateType = stateType;
     }
 
     public PersistentTask(
@@ -21,7 +27,8 @@ public sealed class PersistentTask<TParameters, TState, TResult>
         PersistentTaskId? parentId,
         FailedAttempt? failedAttempt,
         bool isCancellationRequested,
-        DateTimeOffset? continueAfter)
+        DateTimeOffset? continueAfter,
+        PersistentTaskStateType stateType)
     {
         Id = id;
         Parameters = parameters;
@@ -32,6 +39,7 @@ public sealed class PersistentTask<TParameters, TState, TResult>
         FailedAttempt = failedAttempt;
         IsCancellationRequested = isCancellationRequested;
         ContinueAfter = continueAfter;
+        StateType = stateType;
     }
 
     public PersistentTaskId Id { get; }
@@ -40,7 +48,7 @@ public sealed class PersistentTask<TParameters, TState, TResult>
 
     public TResult? Result { get; }
 
-    public PersistentTaskStatus Status { get; }
+    public PersistentTaskStatus Status { get; } = PersistentTaskStatus.Waiting;
 
     public TState State { get; }
 
@@ -51,4 +59,6 @@ public sealed class PersistentTask<TParameters, TState, TResult>
     public bool IsCancellationRequested { get; }
 
     public DateTimeOffset? ContinueAfter { get; }
+
+    public PersistentTaskStateType StateType { get; } = PersistentTaskStateType.Task;
 }
