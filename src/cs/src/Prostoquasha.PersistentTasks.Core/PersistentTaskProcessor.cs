@@ -93,49 +93,39 @@ public interface ISerializer
     object? Deserialize(byte[]? bytes);
 }
 
-internal sealed class PersistentTaskProcessor
+internal interface IPersistentTaskDispatcher
 {
-    private Task _execution;
+    Task DispatchAsync(IPersistentTask task, CancellationToken cancellationToken);
+}
+
+internal sealed class PersistentTaskDispatcher<TParameters, TState, TResult> : IPersistentTaskDispatcher
+{
     private readonly IPersistentTaskRepository _persistentTaskRepository;
-    private readonly TimeProvider _timeProvider;
-    private readonly PersistentTaskProcessorSettings _settings;
-    private readonly Dictionary<Type, object> _executors;
     private readonly ISerializer _serializer;
+    private readonly IPersistentTaskExecutor<TParameters, TState, TResult> _executor;
 
-    public void Start()
+    public async Task DispatchAsync(IPersistentTask task, CancellationToken cancellationToken)
     {
-        _execution = RunAsync(CancellationToken.None);
+        await DispatchAsync((PersistentTask<TParameters, TState, TResult>)task, cancellationToken);
     }
 
-    private async Task RunAsync(CancellationToken cancellationToken)
-    {
-        while (true)
-        {
-            var task = await AcquireTaskAsync(cancellationToken);
-
-            if (task.IsCancellationRequested)
-            {
-                await _persistentTaskRepository.UpdateAsync(
-                    task.Id,
-                    new SetPersistentTaskStatusRequest
-                    {
-                        Status = PersistentTaskStatus.Canceled
-                    },
-                    cancellationToken);
-                continue;
-            }
-
-
-        }
-    }
-
-
-    private async Task ExecuteAsync<TParameters, TState, TResult>(
+    private async Task DispatchAsync(
         PersistentTask<TParameters, TState, TResult> task,
         CancellationToken cancellationToken)
     {
-        var executor = (IPersistentTaskExecutor<TParameters, TState, TResult>)_executors[task.GetType()];
-        var result = await executor.ExecuteAsync(task, cancellationToken);
+        if (task.IsCancellationRequested)
+        {
+            await _persistentTaskRepository.UpdateAsync(
+                task.Id,
+                new SetPersistentTaskStatusRequest
+                {
+                    Status = PersistentTaskStatus.Canceled
+                },
+                cancellationToken);
+            return;
+        }
+
+        var result = await _executor.ExecuteAsync(task, cancellationToken);
 
         switch (result.Command)
         {
@@ -229,6 +219,32 @@ internal sealed class PersistentTaskProcessor
                 }
         }
     }
+}
+
+internal sealed class PersistentTaskProcessor
+{
+    private Task _execution;
+    private readonly IPersistentTaskRepository _persistentTaskRepository;
+    private readonly TimeProvider _timeProvider;
+    private readonly PersistentTaskProcessorSettings _settings;
+    private readonly Dictionary<Type, IPersistentTaskDispatcher> _dispatchers;
+    private readonly ISerializer _serializer;
+
+    public void Start()
+    {
+        _execution = RunAsync(CancellationToken.None);
+    }
+
+    private async Task RunAsync(CancellationToken cancellationToken)
+    {
+        while (true)
+        {
+            var task = await AcquireTaskAsync(cancellationToken);
+            var dispatcher = _dispatchers[task.GetType()];
+            await dispatcher.DispatchAsync(task, cancellationToken);
+        }
+    }
+
 
     private async Task<IPersistentTask> AcquireTaskAsync(CancellationToken cancellationToken)
     {

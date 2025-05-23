@@ -2,7 +2,7 @@ using System;
 
 namespace Prostoquasha.PersistentTasks.Core;
 
-public sealed class PersistentTask<TParameters, TState, TResult>
+public sealed class PersistentTask<TParameters, TState, TResult> : IPersistentTask
 {
     public PersistentTask(
         PersistentTaskId id,
